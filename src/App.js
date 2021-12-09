@@ -29,20 +29,15 @@ function App() {
         }
     }, [dispatch])
 
-
     return (
         <div>
-            <Header
-                setToken={setToken}
-                token={token}
-            />
-            <div className="App">
+            <Header/>
 
+            <div className="App">
                 {token ?
-                    <Game token={token}/> :
+                    <Game/> :
                     <Login/>
                 }
-
             </div>
         </div>
     );
