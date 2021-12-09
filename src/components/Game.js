@@ -3,11 +3,14 @@ import Artist from "./Artist"
 import {searchArtists} from "../api";
 
 const Game = () => {
+    const initialFighters = [{}, {}]
     const [searchKey, setSearchKey] = useState('')
     const [artists, setArtists] = useState([])
     const [playerIndex, setPlayerIndex] = useState(0)
-    const [fighters, setFighters] = useState([{}, {}])
+    const [fighters, setFighters] = useState(initialFighters)
     const [winner, setWinner] = useState(null)
+    const [pointsP1, setPointsP1] = useState(0)
+    const [pointsP2, setPointsP2] = useState(0)
 
     const getArtist = async (e) => {
         e.preventDefault()
@@ -56,51 +59,69 @@ const Game = () => {
                 winner = 'Draw'
         }
 
+        addPoint(winner)
         setWinner(winner)
+        setFighters(initialFighters)
+    }
+
+    const addPoint = () => {
+        if (winner === 'Player 1') {
+            setPointsP1(pointsP1 + 100)
+        } else {
+            setPointsP2(pointsP2 + 100)
+        }
+    }
+
+    const nextRound = () => {
+        setArtists([])
+        setPlayerIndex(0)
+        setFighters(initialFighters)
+        setWinner(null)
     }
 
     return (
-        <div>
+        <div className={"game"}>
             <div className={"game-bar"}>
                 <div>
-                    <div>Player 1:</div>
-                    <h5>{fighters[0].name && fighters[0].name}</h5>
+                    Player 1: {pointsP1}
+                    {fighters[0].name && <span> - {fighters[0].name}</span>}
                 </div>
                 <div>
-                    <div>Player 2:</div>
-                    <h5>{fighters[1].name && fighters[1].name}</h5>
+                    {fighters[1].name && <span>{fighters[1].name} - </span>}
+                    Player 2: {pointsP2}
                 </div>
             </div>
 
             {winner ?
                 <div>
-                    Winner: {winner}
-
-                    <button className="button">Next Round</button>
+                    <div>
+                        <span className="title">Winner: {winner}</span>
+                    </div>
+                    <button onClick={nextRound} className="button button--primary">Next Round</button>
                 </div>
                 : playerIndex <= 1 ?
                     <div className={"select-player"}>
-                        <h1 className={"text-center"}>Player {playerIndex + 1}: Choose Your Fighter</h1>
-                        <form className={"search-form"} onSubmit={getArtist}>
+                        <span className={"title"}>Player {playerIndex + 1}: <br/> Choose Your Fighter</span>
+                        <form className={"form"} onSubmit={getArtist}>
                             <input className={"search-input"} type="text" value={searchKey}
                                    onChange={(e) => setSearchKey(e.target.value)}/>
                             <button className={"search-submit"} type={"submit"}>
-                                <i className="fas fa-search"/>
+                                Go
                             </button>
                         </form>
                     </div>
                     :
                     <div>
-                        <div>Choose Category</div>
+                        <span className={"title"}>Choose Category</span>
 
                         <div>
-                            <form onSubmit={fight}>
-                                <select name="category" id="category">
+                            <form className={"form"} onSubmit={fight}>
+                                <select name="category" id="category" className={"category"}>
                                     <option value="popularity">Popularity</option>
                                     <option value="followers">Follower</option>
-                                    <option value="genres">Amount of Genres</option>
+                                    <option value="genres">Genres</option>
                                 </select>
-                                <button type={"submit"} className={"button button-fight"}>Fight</button>
+                                <button type={"submit"} className={"button  button--primary"}>Fight!</button>
                             </form>
                         </div>
 

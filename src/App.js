@@ -32,7 +32,6 @@ function App() {
     return (
         <div>
             <Header/>
-
             <div className="App">
                 {token ?
                     <Game/> :

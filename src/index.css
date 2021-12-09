@@ -16,9 +16,11 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--dark-color);
+    background-color: var(--mid-color);
     color: var(--light-color);
     min-height: 100vh;
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
 }
 
 code {
