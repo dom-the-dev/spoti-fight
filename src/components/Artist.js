@@ -1,12 +1,15 @@
 import React from 'react';
 
-const Artist = ({artist}) => {
+const Artist = ({artist, selectArtist}) => {
     return (
-        <div className={"artist"}>
-            <h1>{artist.name}</h1>
+        <div className={"artist"} onClick={() => selectArtist(artist)}>
             {artist.images && artist.images.length ?
-                <img src={artist.images[0].url} alt={artist.name}/>
-                : null}
+                <img className={"cover"} src={artist.images[2].url} alt={artist.name}/>
+                : <div className={"cover"}>No Image</div>}
+
+            <div className={"artist-info"}>
+                <span className={"artist-name"}>{artist.name}</span>
+            </div>
         </div>
     );
 };

@@ -1,50 +1,49 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import Game from "./components/Game";
 import Login from "./components/Login";
 import "./App.css"
+import Header from "./components/Header";
+import {useDispatch, useSelector} from "react-redux";
+import {setToken} from "./features/login/loginSlice";
 
 function App() {
-    const [token, setToken] = useState(null)
+    const dispatch = useDispatch()
+    const {token} = useSelector(state => state.login)
 
     useEffect(() => {
-        if (window.location.hash) {
-            // GET TOKEN FROM HASH
-            const token = window.location.hash
+        let token;
+        if (window.localStorage.getItem('token')) {
+            token = window.localStorage.getItem('token')
+        } else if (window.location.hash) {
+            token = window.location.hash
                 .substring(1)
                 .split("&")
                 .find(key => key.startsWith("access_token"))
                 .split("=")[1]
 
             window.location.hash = "";
-
-            if (token) {
-                setToken(token)
-            }
         }
-    }, [])
 
-    const logout = () => {
-        const url = 'https://accounts.spotify.com/en/logout';
-        const spotifyLogoutWindow = window.open(url, 'Spotify Logout', 'width=700,height=500,top=40,left=40');
-        setTimeout(() => spotifyLogoutWindow.close(), 1500);
-        setToken(null)
-        window.location.hash = "";
-    }
+        if (token) {
+            dispatch(setToken(token))
+        }
+    }, [dispatch])
+
 
     return (
-        <div className="App">
-            <header>
-                <span>Spoti Fight</span>
+        <div>
+            <Header
+                setToken={setToken}
+                token={token}
+            />
+            <div className="App">
+
                 {token ?
-                    <button onClick={logout}>Logout</button>
-                    : null}
-            </header>
+                    <Game token={token}/> :
+                    <Login/>
+                }
 
-            {token ?
-                <Game token={token}/> :
-                <Login/>
-            }
-
+            </div>
         </div>
     );
 }
