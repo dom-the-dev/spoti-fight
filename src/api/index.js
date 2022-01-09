@@ -5,7 +5,6 @@ const API_URL = "https://api.spotify.com/v1/"
 
 export const searchArtists = async (searchKey) => {
     const {token} = store.getState().login
-    console.log('token', token)
     const {data: {artists: {items}}} = await axios.get(API_URL + 'search/', {
         headers: {
             Authorization: `Bearer ${token}`
