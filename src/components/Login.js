@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Login = () => {
-    const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize"
-    const CLIENT_ID = "b39c9c2f4fa346a69e4cdbcafefd5185"
-    const REDIRECT_URI = "http://localhost:3000"
+    const SPOTIFY_AUTH = process.env.REACT_APP_SPOTIFY_AUTH
+    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI
 
     return (
         <div className={"login"}>
